@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inventory-service
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    defer-datasource-initialization: true
+server:
+  port: 8082

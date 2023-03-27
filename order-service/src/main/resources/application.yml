@@ -1,0 +1,11 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/order-service
+    driver-class-name: org.postgresql.Driver
+    password: postgres
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+server:
+  port: 8081
