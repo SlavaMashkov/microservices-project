@@ -1,4 +1,4 @@
-package com.slavamashkov.orderservice.dto;
+package com.slavamashkov.inventoryservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +9,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderRequest {
-    private List<OrderLineItemsDto> orderLineItemsDtoList;
+public class InventoryRequest {
+    private List<String> skuCodes;
 }
