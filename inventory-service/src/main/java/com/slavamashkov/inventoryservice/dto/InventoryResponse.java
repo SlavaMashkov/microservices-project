@@ -2,6 +2,7 @@ package com.slavamashkov.inventoryservice.dto;
 
 import lombok.*;
 
+@ToString
 @Getter
 @Setter
 @Builder

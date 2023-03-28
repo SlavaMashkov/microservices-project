@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderLineItemsRepository orderLineItemsRepository;
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     @Override
     public void placeOrder(OrderRequest orderRequest) {
@@ -53,8 +53,8 @@ public class OrderServiceImpl implements OrderService {
                 .skuCodes(skuCodes)
                 .build();
 
-        List<InventoryResponse> inventoryResponses = webClient.post()
-                .uri("http://localhost:8082/api/inventory")
+        List<InventoryResponse> inventoryResponses = webClientBuilder.build().post()
+                .uri("http://inventory-service/api/inventory")
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(BodyInserters.fromValue(request))
                 .retrieve()
