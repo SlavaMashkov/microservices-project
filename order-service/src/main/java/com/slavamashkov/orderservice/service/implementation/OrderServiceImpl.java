@@ -49,8 +49,9 @@ public class OrderServiceImpl implements OrderService {
                 .map(OrderLineItems::getSkuCode)
                 .toList();
 
-        InventoryRequest request = new InventoryRequest();
-        request.setSkuCodes(skuCodes);
+        InventoryRequest request = InventoryRequest.builder()
+                .skuCodes(skuCodes)
+                .build();
 
         List<InventoryResponse> inventoryResponses = webClient.post()
                 .uri("http://localhost:8082/api/inventory")
@@ -59,8 +60,6 @@ public class OrderServiceImpl implements OrderService {
                 .retrieve()
                 .bodyToMono(new ParameterizedTypeReference<List<InventoryResponse>>() {})
                 .block();
-
-        System.out.println(inventoryResponses);
 
         boolean allProductsInStock = inventoryResponses.stream().allMatch(InventoryResponse::isInStock);
 

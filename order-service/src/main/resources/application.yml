@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: order-service
   datasource:
     url: jdbc:postgresql://localhost:5432/order-service
     driver-class-name: org.postgresql.Driver
@@ -9,3 +11,9 @@ spring:
       ddl-auto: create-drop
 server:
   port: 8081
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
