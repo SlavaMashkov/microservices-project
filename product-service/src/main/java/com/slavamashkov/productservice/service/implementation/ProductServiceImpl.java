@@ -20,7 +20,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
 
     @Override
-    public void createProduct(ProductRequest productRequest) {
+    public ProductResponse createProduct(ProductRequest productRequest) {
         Product product = Product.builder()
                 .name(productRequest.getName())
                 .description(productRequest.getDescription())
@@ -30,6 +30,8 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
 
         log.info("Product with id: {} is saved", product.getId());
+
+        return ProductResponse.mapToProductResponse(product);
     }
 
     @Override

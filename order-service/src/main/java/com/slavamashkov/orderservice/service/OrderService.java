@@ -1,10 +1,11 @@
 package com.slavamashkov.orderservice.service;
 
 import com.slavamashkov.orderservice.dto.OrderRequest;
+import com.slavamashkov.orderservice.dto.OrderResponse;
 
 public interface OrderService {
     // CREATE
-    void placeOrder(OrderRequest orderRequest);
+    OrderResponse placeOrder(OrderRequest orderRequest);
 
     // READ
 

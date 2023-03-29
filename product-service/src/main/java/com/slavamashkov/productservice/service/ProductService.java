@@ -6,7 +6,13 @@ import com.slavamashkov.productservice.dto.ProductResponse;
 import java.util.List;
 
 public interface ProductService {
-    void createProduct(ProductRequest productRequest);
+    // CREATE
+    ProductResponse createProduct(ProductRequest productRequest);
 
+    // READ
     List<ProductResponse> getAllProducts();
+
+    // UPDATE
+
+    // DELETE
 }

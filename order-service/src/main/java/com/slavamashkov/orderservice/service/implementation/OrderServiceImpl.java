@@ -1,9 +1,6 @@
 package com.slavamashkov.orderservice.service.implementation;
 
-import com.slavamashkov.orderservice.dto.InventoryRequest;
-import com.slavamashkov.orderservice.dto.InventoryResponse;
-import com.slavamashkov.orderservice.dto.OrderLineItemsDto;
-import com.slavamashkov.orderservice.dto.OrderRequest;
+import com.slavamashkov.orderservice.dto.*;
 import com.slavamashkov.orderservice.model.Order;
 import com.slavamashkov.orderservice.model.OrderLineItems;
 import com.slavamashkov.orderservice.repository.OrderLineItemsRepository;
@@ -34,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final WebClient.Builder webClientBuilder;
 
     @Override
-    public void placeOrder(OrderRequest orderRequest) {
+    public OrderResponse placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
 
@@ -71,6 +68,8 @@ public class OrderServiceImpl implements OrderService {
             }
 
             log.info("Order with id: {} is saved", order.getId());
+
+            return OrderResponse.mapToOrderResponse(order);
         } else {
             throw new IllegalArgumentException("Product is not in stock, please try again later");
         }
