@@ -1,11 +1,15 @@
 package com.slavamashkov.orderservice.controller;
 
 import com.slavamashkov.orderservice.dto.OrderRequest;
-import com.slavamashkov.orderservice.dto.OrderResponse;
 import com.slavamashkov.orderservice.service.OrderService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
+import io.github.resilience4j.timelimiter.annotation.TimeLimiter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.concurrent.CompletableFuture;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,13 +19,20 @@ public class OrderController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderResponse placeOrder(@RequestBody OrderRequest orderRequest) {
-        return orderService.placeOrder(orderRequest);
+    @CircuitBreaker(name = "inventory", fallbackMethod = "fallbackMethod")
+    @TimeLimiter(name = "inventory")
+    @Retry(name = "inventory")
+    public CompletableFuture<String> placeOrder(@RequestBody OrderRequest orderRequest) {
+        return CompletableFuture.supplyAsync(() -> orderService.placeOrder(orderRequest));
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteOrder(@PathVariable(name = "id") Long id) {
         orderService.deleteOrderById(id);
+    }
+
+    public CompletableFuture<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException) {
+        return CompletableFuture.supplyAsync(() -> "Oops! Something went wrong, please order after some time!");
     }
 }

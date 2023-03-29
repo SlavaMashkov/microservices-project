@@ -8,7 +8,7 @@ spring:
     username: postgres
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     defer-datasource-initialization: true
 server:
   port: 0

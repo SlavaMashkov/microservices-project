@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final WebClient.Builder webClientBuilder;
 
     @Override
-    public OrderResponse placeOrder(OrderRequest orderRequest) {
+    public String placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
 
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
 
             log.info("Order with id: {} is saved", order.getId());
 
-            return OrderResponse.mapToOrderResponse(order);
+            return "Order successfully placed!";
         } else {
             throw new IllegalArgumentException("Product is not in stock, please try again later");
         }
