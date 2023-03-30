@@ -1,6 +1,7 @@
 package com.slavamashkov.orderservice.service.implementation;
 
 import com.slavamashkov.orderservice.dto.*;
+import com.slavamashkov.orderservice.event.OrderPlacedEvent;
 import com.slavamashkov.orderservice.model.Order;
 import com.slavamashkov.orderservice.model.OrderLineItems;
 import com.slavamashkov.orderservice.repository.OrderLineItemsRepository;
@@ -12,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.BodyInserters;
@@ -29,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final OrderLineItemsRepository orderLineItemsRepository;
     private final WebClient.Builder webClientBuilder;
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     @Override
     public String placeOrder(OrderRequest orderRequest) {
@@ -66,6 +69,8 @@ public class OrderServiceImpl implements OrderService {
                 oli.setOrder(order);
                 orderLineItemsRepository.save(oli);
             }
+
+            kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
 
             log.info("Order with id: {} is saved", order.getId());
 
