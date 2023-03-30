@@ -1,0 +1,14 @@
+server:
+  port: 8080
+spring:
+  kafka:
+    bootstrap-servers: broker:29092
+  datasource:
+    url: jdbc:postgresql://postgres:5432/order-service
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka:eureka@discovery-server:8761/eureka
